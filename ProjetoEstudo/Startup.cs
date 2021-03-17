@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
+using ProjetoEstudo.Model;
 
 namespace ProjetoEstudo
 {
@@ -26,6 +27,9 @@ namespace ProjetoEstudo
 			services.AddDbContext<BancoContext>(db => {
 				db.UseSqlServer(Configuration.GetConnectionString("ProjetoEstudo"));
 			});
+
+			services.AddTransient<IDao<Jogo>, RepositorioBase<Jogo>>();
+			services.AddTransient<IDao<Cliente>, ClienteDao>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
