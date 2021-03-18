@@ -8,21 +8,21 @@ using System.Linq;
 namespace ProjetoEstudo.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	public class JogoController : ControllerBase
 	{
 
-		private readonly IDao<Jogo> _jogoDao;
+		private readonly IDao<Jogo> _jogoRepositorio;
 
-		public JogoController(IDao<Jogo> jogoDao)
+		public JogoController(IDao<Jogo> jogoRepositorio)
 		{
-			_jogoDao = jogoDao;
+			_jogoRepositorio = jogoRepositorio;
 		}
 
 		[HttpGet]
 		public IActionResult GetAllJogos()
 		{
-			List<Jogo> listaJogos = _jogoDao.GetAll().ToList();
+			List<Jogo> listaJogos = _jogoRepositorio.GetAll().ToList();
 			return Ok(listaJogos);
 		}
 
@@ -31,7 +31,7 @@ namespace ProjetoEstudo.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_jogoDao.Save(jogo);
+				_jogoRepositorio.Save(jogo);
 
 				
 				var uri = Url.Action("GetJogo", new { id = jogo.Id });
@@ -46,7 +46,7 @@ namespace ProjetoEstudo.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_jogoDao.Update(jogo);
+				_jogoRepositorio.Update(jogo);
 
 				return Ok(jogo);
 			}
@@ -57,7 +57,7 @@ namespace ProjetoEstudo.Controllers
 		[HttpGet("ByPlataforma/{plataforma:int}")]
 		public IActionResult GetJogoByPlataforma(Enum.Plataforma plataforma)
 		{
-			List<Jogo> listaJogos = _jogoDao.GetAll()
+			List<Jogo> listaJogos = _jogoRepositorio.GetAll()
 											.Where(jogo => jogo.Plataforma == plataforma)
 											.ToList();
 			return Ok(listaJogos);
@@ -66,7 +66,7 @@ namespace ProjetoEstudo.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetJogo(long id)
 		{
-			Jogo jogo = _jogoDao.FindById(id);
+			Jogo jogo = _jogoRepositorio.FindById(id);
 
 			if(jogo == null)
 			{
@@ -78,11 +78,11 @@ namespace ProjetoEstudo.Controllers
 		[HttpDelete("{id}")]
 		public IActionResult DeleteJogo(long id)
 		{
-			Jogo jogo = _jogoDao.FindById(id);
+			Jogo jogo = _jogoRepositorio.FindById(id);
 
 			if (jogo != null)
 			{
-				_jogoDao.Delete(jogo);
+				_jogoRepositorio.Delete(jogo);
 				return Ok(true); //Poderia retornar NoContent()
 			}
 
