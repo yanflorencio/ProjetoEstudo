@@ -28,8 +28,8 @@ namespace ProjetoEstudo
 				db.UseSqlServer(Configuration.GetConnectionString("ProjetoEstudo"));
 			});
 
-			services.AddTransient<IDao<Jogo>, RepositorioBase<Jogo>>();
-			services.AddTransient<IDao<Cliente>, ClienteDao>();
+			services.AddTransient<IDao<Cliente>, RepositorioBase<Cliente>>();
+			services.AddTransient<IDao<Cliente>, RepositorioBase<Cliente>>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
