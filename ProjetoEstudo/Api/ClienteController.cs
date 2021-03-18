@@ -79,7 +79,7 @@ namespace ProjetoEstudo.Api
 		}
 
 		[HttpGet("ByCpf/{cpf}")]
-		public IActionResult GetJogoByPlataforma(string cpf)
+		public IActionResult GetClienteByCpf(string cpf)
 		{
 			Cliente cliente = _clienteRepositorio.GetAll().FirstOrDefault(c => c.Cpf.Equals(cpf));
 
