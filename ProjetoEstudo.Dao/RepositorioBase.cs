@@ -11,7 +11,7 @@ namespace ProjetoEstudo.Dao
 			_context = context;
 		}
 
-		public void Delete(TEntity[] entity)
+		public void Delete(params TEntity[] entity)
 		{
 			_context.Set<TEntity>().RemoveRange(entity);
 			_context.SaveChanges();
@@ -28,7 +28,7 @@ namespace ProjetoEstudo.Dao
 			_context.SaveChanges();
 		}
 
-		public void Update(TEntity[] entity)
+		public void Update(params TEntity[] entity)
 		{
 			_context.Set<TEntity>().UpdateRange(entity);
 			_context.SaveChanges();

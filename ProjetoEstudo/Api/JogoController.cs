@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EstudoProjeto.Utils;
+using Microsoft.AspNetCore.Mvc;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Model;
 using System.Collections.Generic;
@@ -40,6 +41,28 @@ namespace ProjetoEstudo.Controllers
 			return BadRequest();
 		}
 
+		[HttpPut]
+		public IActionResult AlterarJogo([FromBody] Jogo jogo)
+		{
+			if (ModelState.IsValid)
+			{
+				_jogoDao.Update(jogo);
+
+				return Ok(jogo);
+			}
+
+			return BadRequest();
+		}
+
+		[HttpGet("ByPlataforma/{plataforma:int}")]
+		public IActionResult GetJogoByPlataforma(Enum.Plataforma plataforma)
+		{
+			List<Jogo> listaJogos = _jogoDao.GetAll()
+											.Where(jogo => jogo.Plataforma == plataforma)
+											.ToList();
+			return Ok(listaJogos);
+		}
+
 		[HttpGet("{id}")]
 		public IActionResult GetJogo(long id)
 		{
@@ -50,6 +73,20 @@ namespace ProjetoEstudo.Controllers
 				return NotFound();
 			}
 			return Ok(jogo);
+		}
+
+		[HttpDelete("{id}")]
+		public IActionResult DeleteJogo(long id)
+		{
+			Jogo jogo = _jogoDao.FindById(id);
+
+			if (jogo != null)
+			{
+				_jogoDao.Delete(jogo);
+				return Ok(true); //Poderia retornar NoContent()
+			}
+
+			return BadRequest();
 		}
 	}
 }

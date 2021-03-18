@@ -7,7 +7,7 @@ namespace ProjetoEstudo.Dao
 		public IQueryable<TEntity> GetAll();
 		public TEntity FindById(long id);
 		public void Save(params TEntity[] entity);
-		public void Delete(TEntity[] entity);
-		public void Update(TEntity[] entity);
+		public void Delete(params TEntity[] entity);
+		public void Update(params TEntity[] entity);
 	}
 }
