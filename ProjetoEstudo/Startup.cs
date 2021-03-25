@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
+using ProjetoEstudo.Dao.Interface;
 using ProjetoEstudo.Model;
 
 namespace ProjetoEstudo

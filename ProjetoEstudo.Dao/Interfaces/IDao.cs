@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ProjetoEstudo.Dao
+namespace ProjetoEstudo.Dao.Interface
 {
 	public interface IDao<TEntity> where TEntity : class
 	{

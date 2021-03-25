@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using ProjetoEstudo.Dao.Interface;
+using System.Linq;
 
 namespace ProjetoEstudo.Dao
 {

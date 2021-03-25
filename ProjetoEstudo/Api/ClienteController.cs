@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjetoEstudo.Dao;
+using ProjetoEstudo.Dao.Interface;
 using ProjetoEstudo.Model;
 using System.Linq;
 
