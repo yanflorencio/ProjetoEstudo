@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Dao.Interface;
+using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 
 namespace ProjetoEstudo
@@ -31,6 +32,7 @@ namespace ProjetoEstudo
 
 			services.AddTransient<IDao<Jogo>, RepositorioBase<Jogo>>();
 			services.AddTransient<IDao<Cliente>, RepositorioBase<Cliente>>();
+			services.AddTransient<IAlugadoDao, AlugadoDao>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

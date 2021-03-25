@@ -5,7 +5,7 @@ namespace ProjetoEstudo.Dao
 {
 	public class RepositorioBase<TEntity> : IDao<TEntity> where TEntity : class
 	{
-		private readonly BancoContext _context;
+		protected readonly BancoContext _context;
 
 		public RepositorioBase(BancoContext context)
 		{
