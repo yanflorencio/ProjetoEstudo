@@ -1,6 +1,6 @@
 ﻿using EstudoProjeto.Utils;
 using Microsoft.AspNetCore.Mvc;
-using ProjetoEstudo.Dao.Interface;
+using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ namespace ProjetoEstudo.Controllers
 	public class JogoController : ControllerBase
 	{
 
-		private readonly IDao<Jogo> _jogoRepositorio;
+		private readonly IJogoDao _jogoRepositorio;
 
-		public JogoController(IDao<Jogo> jogoRepositorio)
+		public JogoController(IJogoDao jogoRepositorio)
 		{
 			_jogoRepositorio = jogoRepositorio;
 		}
@@ -87,6 +87,13 @@ namespace ProjetoEstudo.Controllers
 			}
 
 			return BadRequest();
+		}
+
+		[HttpGet("GetJogosDisponiveis")]
+		public IActionResult GetJogosDisponiveis()
+		{
+			IList<Jogo> listaJogos = _jogoRepositorio.GetJogosDisponiveis();
+			return Ok(listaJogos);
 		}
 	}
 }

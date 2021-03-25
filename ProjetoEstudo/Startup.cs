@@ -30,7 +30,7 @@ namespace ProjetoEstudo
 				db.UseSqlServer(Configuration.GetConnectionString("ProjetoEstudo"));
 			});
 
-			services.AddTransient<IDao<Jogo>, RepositorioBase<Jogo>>();
+			services.AddTransient<IJogoDao, JogoDao>();
 			services.AddTransient<IDao<Cliente>, RepositorioBase<Cliente>>();
 			services.AddTransient<IAlugadoDao, AlugadoDao>();
 		}

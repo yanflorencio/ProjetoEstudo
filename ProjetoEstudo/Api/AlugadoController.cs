@@ -2,6 +2,8 @@
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using System;
+using System.Linq;
+using static EstudoProjeto.Utils.Enum;
 
 namespace ProjetoEstudo.Api
 {
@@ -21,12 +23,12 @@ namespace ProjetoEstudo.Api
 		{
 			if (ModelState.IsValid)
 			{
-				if ((alugado.IdCliente != default) && (alugado.IdJogo != default)) 
+				if ((alugado.IdCliente != default) && (this.CheckJogoEstaDisponivel(alugado))) 
 				{
 					DateTime dataEntrega = alugado.DataAluguel.AddDays(5);
 
 					alugado.DataEntrega = dataEntrega;
-					alugado.Status = EstudoProjeto.Utils.Enum.StatusAlugado.Alugado;
+					alugado.Status = StatusAlugado.Alugado;
 
 					_alugadoDao.Save(alugado);
 
@@ -35,6 +37,16 @@ namespace ProjetoEstudo.Api
 			}
 
 			return BadRequest();
+		}
+
+		private bool CheckJogoEstaDisponivel(Alugado alugado)
+		{
+			IQueryable<Alugado> query = _alugadoDao.GetAll().Where(bean =>
+																	(bean.IdJogo == alugado.IdJogo) &&
+																	(bean.Status != StatusAlugado.Alugado)
+																	);
+
+			return query.Any();
 		}
 	}
 }
