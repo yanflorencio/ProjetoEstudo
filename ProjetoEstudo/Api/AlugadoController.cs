@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
+using ProjetoEstudo.Model.Dtos;
 using System;
 using System.Linq;
 using static EstudoProjeto.Utils.Enum;
@@ -47,6 +48,43 @@ namespace ProjetoEstudo.Api
 																	);
 
 			return query.Any();
+		}
+
+		[HttpPut]
+		public IActionResult DevolverJogo([FromBody] DevolverJogoRequestDto devolverJogoRequestDto)
+		{
+			if (ModelState.IsValid)
+			{
+				Alugado alugado = _alugadoDao.FindById(devolverJogoRequestDto.Id);
+
+				if (alugado != null)
+				{
+					alugado.Status = StatusAlugado.Entregue;
+
+					_alugadoDao.Update(alugado);
+
+					DevolverJogoResponseDto responseDto = this.GetDevolverJogoResponseDto(devolverJogoRequestDto.DataDevolucao, alugado.DataEntrega);
+
+					return Ok(responseDto);
+				}
+			}
+
+			return BadRequest();
+		}
+
+		private DevolverJogoResponseDto GetDevolverJogoResponseDto(DateTime dataEntregaReal, DateTime dataEntregaEsperada)
+		{
+
+			TimeSpan date = dataEntregaReal - dataEntregaEsperada;
+
+			int days = date.Days <= 0 ? 0 : date.Days;
+
+			DevolverJogoResponseDto devolverJogoResponseDto = new DevolverJogoResponseDto()
+			{
+				DiasDeAtraso = days,
+			};
+
+			return devolverJogoResponseDto;
 		}
 	}
 }
