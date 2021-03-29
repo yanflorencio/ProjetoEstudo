@@ -24,7 +24,7 @@ namespace ProjetoEstudo.Api
 		{
 			if (ModelState.IsValid)
 			{
-				if ((alugado.IdCliente != default) && (this.CheckJogoEstaDisponivel(alugado))) 
+				if ((alugado.ClienteId != default) && (!this.CheckJogoEstaDisponivel(alugado))) 
 				{
 					DateTime dataEntrega = alugado.DataAluguel.AddDays(5);
 
@@ -43,7 +43,7 @@ namespace ProjetoEstudo.Api
 		private bool CheckJogoEstaDisponivel(Alugado alugado)
 		{
 			IQueryable<Alugado> query = _alugadoDao.GetAll().Where(bean =>
-																	(bean.IdJogo == alugado.IdJogo) &&
+																	(bean.JogoId == alugado.JogoId) &&
 																	(bean.Status != StatusAlugado.Alugado)
 																	);
 

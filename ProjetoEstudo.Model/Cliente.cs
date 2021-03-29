@@ -20,6 +20,6 @@ namespace ProjetoEstudo.Model
 		[MaxLength(11)]
 		public string Cpf { get; set; }
 
-		public IList<Alugado> JogosAlugados { get; set; }
+		public virtual IList<Alugado> JogosAlugados { get; set; }
 	}
 }

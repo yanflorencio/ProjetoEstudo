@@ -17,7 +17,7 @@ namespace ProjetoEstudo.Dao
 		{
 			IQueryable<Jogo> query = from jogo in _context.Jogo
 									 join alugado in _context.Alugado
-									 on jogo.Id equals alugado.IdJogo into joinJogoAlugado
+									 on jogo.Id equals alugado.JogoId into joinJogoAlugado
 									 from subquery in joinJogoAlugado.DefaultIfEmpty()
 									 where subquery.Status != StatusAlugado.Alugado
 									 select new Jogo 

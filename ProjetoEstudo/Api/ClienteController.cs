@@ -95,5 +95,13 @@ namespace ProjetoEstudo.Api
 
 			return cadastrado;
 		}
+
+		[HttpGet("JogosAlugadosByCpf/{cpf}")]
+		public IActionResult GetJogosAlugadosByCpf(string cpf)
+		{
+			Cliente cliente = _clienteDao.GetJogosAlugadosByCpf(cpf);
+
+			return Ok(cliente);
+		}
 	}
 }

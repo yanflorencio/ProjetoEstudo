@@ -11,17 +11,17 @@ namespace ProjetoEstudo.Model
 		[Column("id")]
 		public long Id { get; set; }
 
-		[Column("id_jogo")]
-		[Required]
-		public long IdJogo { get; set; }
-
-		[Column("id_cliente")]
-		[Required]
-		public long IdCliente { get; set; }
-
 		[Column("status")]
 		[Required]
 		public StatusAlugado Status { get; set; }
+
+		[Column("jogo_id")]
+		[Required]
+		public long JogoId { get; set; }
+
+		[Column("cliente_id")]
+		[Required]
+		public long ClienteId { get; set; }
 
 		[Column("data_aluguel")]
 		[Required]

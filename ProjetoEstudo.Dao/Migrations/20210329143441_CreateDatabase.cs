@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjetoEstudo.Dao.Migrations
 {
-    public partial class CriacaoDaBase : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,40 +41,38 @@ namespace ProjetoEstudo.Dao.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    id_jogo = table.Column<long>(type: "bigint", nullable: false),
-                    id_cliente = table.Column<long>(type: "bigint", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
+                    jogo_id = table.Column<long>(type: "bigint", nullable: false),
+                    cliente_id = table.Column<long>(type: "bigint", nullable: false),
                     data_aluguel = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    data_entrega = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    JogoId = table.Column<long>(type: "bigint", nullable: true),
-                    ClienteId = table.Column<long>(type: "bigint", nullable: true)
+                    data_entrega = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_alugado", x => x.id);
                     table.ForeignKey(
-                        name: "FK_alugado_cliente_ClienteId",
-                        column: x => x.ClienteId,
+                        name: "FK_alugado_cliente_cliente_id",
+                        column: x => x.cliente_id,
                         principalTable: "cliente",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_alugado_jogo_JogoId",
-                        column: x => x.JogoId,
+                        name: "FK_alugado_jogo_jogo_id",
+                        column: x => x.jogo_id,
                         principalTable: "jogo",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_alugado_ClienteId",
+                name: "IX_alugado_cliente_id",
                 table: "alugado",
-                column: "ClienteId");
+                column: "cliente_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_alugado_JogoId",
+                name: "IX_alugado_jogo_id",
                 table: "alugado",
-                column: "JogoId");
+                column: "jogo_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

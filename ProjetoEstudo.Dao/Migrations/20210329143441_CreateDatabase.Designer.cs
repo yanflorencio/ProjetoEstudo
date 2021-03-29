@@ -10,8 +10,8 @@ using ProjetoEstudo.Dao;
 namespace ProjetoEstudo.Dao.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    [Migration("20210310010205_CriacaoDaBase")]
-    partial class CriacaoDaBase
+    [Migration("20210329143441_CreateDatabase")]
+    partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,8 +29,9 @@ namespace ProjetoEstudo.Dao.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ClienteId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("ClienteId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("cliente_id");
 
                     b.Property<DateTime>("DataAluguel")
                         .HasColumnType("datetime2")
@@ -40,16 +41,9 @@ namespace ProjetoEstudo.Dao.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("data_entrega");
 
-                    b.Property<long>("IdCliente")
+                    b.Property<long>("JogoId")
                         .HasColumnType("bigint")
-                        .HasColumnName("id_cliente");
-
-                    b.Property<long>("IdJogo")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id_jogo");
-
-                    b.Property<long?>("JogoId")
-                        .HasColumnType("bigint");
+                        .HasColumnName("jogo_id");
 
                     b.Property<int>("Status")
                         .HasColumnType("int")
@@ -116,11 +110,15 @@ namespace ProjetoEstudo.Dao.Migrations
                 {
                     b.HasOne("ProjetoEstudo.Model.Cliente", null)
                         .WithMany("JogosAlugados")
-                        .HasForeignKey("ClienteId");
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ProjetoEstudo.Model.Jogo", "Jogo")
                         .WithMany()
-                        .HasForeignKey("JogoId");
+                        .HasForeignKey("JogoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Jogo");
                 });
