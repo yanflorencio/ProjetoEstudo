@@ -6,9 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
-using ProjetoEstudo.Dao.Interface;
 using ProjetoEstudo.Dao.Interfaces;
-using ProjetoEstudo.Model;
 
 namespace ProjetoEstudo
 {
@@ -31,7 +29,7 @@ namespace ProjetoEstudo
 			});
 
 			services.AddTransient<IJogoDao, JogoDao>();
-			services.AddTransient<IDao<Cliente>, RepositorioBase<Cliente>>();
+			services.AddTransient<IClienteDao, ClienteDao>();
 			services.AddTransient<IAlugadoDao, AlugadoDao>();
 		}
 

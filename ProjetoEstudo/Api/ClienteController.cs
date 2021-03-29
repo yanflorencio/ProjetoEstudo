@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjetoEstudo.Dao.Interface;
+using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using System.Linq;
 
@@ -9,11 +9,11 @@ namespace ProjetoEstudo.Api
 	[Route("api/[controller]")]
 	public class ClienteController : ControllerBase
 	{
-		private readonly IDao<Cliente> _clienteRepositorio;
+		private readonly IClienteDao _clienteDao;
 
-		public ClienteController(IDao<Cliente> jogoDao)
+		public ClienteController(IClienteDao jogoDao)
 		{
-			_clienteRepositorio = jogoDao;
+			_clienteDao = jogoDao;
 		}
 
 		[HttpPost]
@@ -25,7 +25,7 @@ namespace ProjetoEstudo.Api
 
 				if (!cadastrado)
 				{
-					_clienteRepositorio.Save(cliente);
+					_clienteDao.Save(cliente);
 
 					var uri = Url.Action("GetCliente", new { id = cliente.Id });
 					return Created(uri, cliente); //201
@@ -42,7 +42,7 @@ namespace ProjetoEstudo.Api
 		[HttpGet("{id}")]
 		public IActionResult GetCliente(long id)
 		{
-			Cliente jogo = _clienteRepositorio.FindById(id);
+			Cliente jogo = _clienteDao.FindById(id);
 
 			if (jogo == null)
 			{
@@ -54,11 +54,11 @@ namespace ProjetoEstudo.Api
 		[HttpDelete("{id}")]
 		public IActionResult DeleteCliente(long id)
 		{
-			Cliente cliente = _clienteRepositorio.FindById(id);
+			Cliente cliente = _clienteDao.FindById(id);
 
 			if (cliente != null)
 			{
-				_clienteRepositorio.Delete(cliente);
+				_clienteDao.Delete(cliente);
 				return Ok(true); //Poderia retornar NoContent()
 			}
 
@@ -70,7 +70,7 @@ namespace ProjetoEstudo.Api
 		{
 			if (ModelState.IsValid)
 			{
-				_clienteRepositorio.Update(jogo);
+				_clienteDao.Update(jogo);
 
 				return Ok(jogo);
 			}
@@ -81,14 +81,16 @@ namespace ProjetoEstudo.Api
 		[HttpGet("ByCpf/{cpf}")]
 		public IActionResult GetClienteByCpf(string cpf)
 		{
-			Cliente cliente = _clienteRepositorio.GetAll().FirstOrDefault(c => c.Cpf.Equals(cpf));
+			Cliente cliente = _clienteDao.GetAll()
+												.Where(c => c.Cpf.Equals(cpf))
+												.FirstOrDefault();
 
 			return Ok(cliente);
 		}
 
 		private bool VerificaSeCpfJaCadastrado(string cpf)
 		{
-			bool cadastrado = _clienteRepositorio.GetAll()
+			bool cadastrado = _clienteDao.GetAll()
 										.Any(c => c.Cpf.Equals(cpf));
 
 			return cadastrado;
