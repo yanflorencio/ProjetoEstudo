@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 import { ClienteService } from "../cliente.service";
 
@@ -6,9 +7,15 @@ import { ClienteService } from "../cliente.service";
     selector: 'app-cliente',
     templateUrl: 'cadastrar-cliente.component.html'
 })
-export class CadastrarClienteComponent{
+export class CadastrarClienteComponent implements OnInit{
 
     cliente : Object = new Object();
 
+    formulario: FormGroup;
+
     constructor(private clienteService: ClienteService){ }
+
+    ngOnInit(){
+
+    }
 }
