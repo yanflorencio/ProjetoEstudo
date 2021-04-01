@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Cliente } from "../models/cliente";
 
 const PATH_CONTROLLER = '/api/Cliente';
 
@@ -12,5 +13,9 @@ export class ClienteService{
 
     getClienteAndJogosAlugadosByCpf(cpf: string){
         return this.http.get<Object>(PATH_CONTROLLER + '/JogosAlugadosByCpf/' + cpf);
+    }
+
+    postCadastrarCliente(cliente: Cliente){
+        return this.http.post(PATH_CONTROLLER, cliente);
     }
 }

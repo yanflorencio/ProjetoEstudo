@@ -1,21 +1,24 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { Cliente } from "src/app/models/cliente";
 
 import { ClienteService } from "../cliente.service";
 
 @Component({
-    selector: 'app-cliente',
+    selector: 'app-cadastrar_cliente',
     templateUrl: 'cadastrar-cliente.component.html'
 })
 export class CadastrarClienteComponent implements OnInit{
 
-    cliente : Object = new Object();
-
-    formulario: FormGroup;
+    cliente : Cliente = new Cliente();
 
     constructor(private clienteService: ClienteService){ }
 
     ngOnInit(){
 
+    }
+
+    cadastrarCliente(){
+        this.clienteService.postCadastrarCliente(this.cliente)
+            .subscribe(retorno => console.log(retorno));
     }
 }
