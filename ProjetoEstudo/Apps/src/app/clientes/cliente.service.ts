@@ -16,4 +16,9 @@ export class ClienteService{
     getBuscarClienteByCpf(cpf: string){
         return this.http.get<Cliente>(PATH_CONTROLLER + '/ByCpf/' + cpf);
     }
+
+    putAlterarCliente(cliente: Cliente){
+        return this.http.put(PATH_CONTROLLER, cliente);
+    }
+
 }

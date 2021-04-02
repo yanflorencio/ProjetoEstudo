@@ -19,11 +19,14 @@ export class AlterarClienteComponent implements OnInit {
 
   buscarClientePorCpf(){
     this.clienteService.getBuscarClienteByCpf(this.cpf)
-                        .subscribe(clienteRetorno => {
-                                    if(clienteRetorno != null){
-                                        this.cliente = clienteRetorno
-                                    }
+                        .subscribe(clienteRetorno => {                                 
+                          this.cliente = clienteRetorno                                   
                         });
+  }
+
+  alterarCliente(){
+    this.clienteService.putAlterarCliente(this.cliente)
+                      .subscribe();
   }
 
 }
