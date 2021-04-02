@@ -66,13 +66,13 @@ namespace ProjetoEstudo.Api
 		}
 
 		[HttpPut]
-		public IActionResult AlterarCliente([FromBody] Cliente jogo)
+		public IActionResult AlterarCliente([FromBody] Cliente cliente)
 		{
 			if (ModelState.IsValid)
 			{
-				_clienteDao.Update(jogo);
+				_clienteDao.Update(cliente);
 
-				return Ok(jogo);
+				return Ok(cliente);
 			}
 
 			return BadRequest();
