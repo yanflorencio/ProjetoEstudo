@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Dao.Interfaces;
+using ProjetoEstudo.Filtros;
 
 namespace ProjetoEstudo
 {
@@ -27,6 +28,11 @@ namespace ProjetoEstudo
 			services.AddDbContext<BancoContext>(db => {
 				db.UseSqlServer(Configuration.GetConnectionString("ProjetoEstudo"));
 			});
+
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(typeof(ErrorResponseFilter));
+			}).AddXmlSerializerFormatters();
 
 			services.AddTransient<IJogoDao, JogoDao>();
 			services.AddTransient<IClienteDao, ClienteDao>();
