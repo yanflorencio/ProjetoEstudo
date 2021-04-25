@@ -5,6 +5,6 @@ namespace ProjetoEstudo.Dao.Interfaces
 {
 	public interface IClienteDao : IDao<Cliente>
 	{
-		public Cliente GetJogosAlugadosByCpf(string cpf);
+		public Cliente GetClienteIncludeJogosAlugadosByCpf(string cpf);
 	}
 }

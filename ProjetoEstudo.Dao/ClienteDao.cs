@@ -13,7 +13,7 @@ namespace ProjetoEstudo.Dao
 
 		}
 
-		public Cliente GetJogosAlugadosByCpf(string cpf)
+		public Cliente GetClienteIncludeJogosAlugadosByCpf(string cpf)
 		{
 			IQueryable<Cliente> query = _context.Cliente
 										.Include(c => c.JogosAlugados

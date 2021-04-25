@@ -99,7 +99,7 @@ namespace ProjetoEstudo.Api
 		[HttpGet("JogosAlugadosByCpf/{cpf}")]
 		public IActionResult GetJogosAlugadosByCpf(string cpf)
 		{
-			Cliente cliente = _clienteDao.GetJogosAlugadosByCpf(cpf);
+			Cliente cliente = _clienteDao.GetClienteIncludeJogosAlugadosByCpf(cpf);
 
 			return Ok(cliente);
 		}
