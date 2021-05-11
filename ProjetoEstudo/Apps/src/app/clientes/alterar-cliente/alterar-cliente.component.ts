@@ -29,4 +29,9 @@ export class AlterarClienteComponent implements OnInit {
                       .subscribe();
   }
 
+  deletarCliente(){
+    this.clienteService.deleteDeletarCliente(this.cliente.id)
+                      .subscribe();
+  }
+
 }

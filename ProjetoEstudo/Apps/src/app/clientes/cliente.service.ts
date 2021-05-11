@@ -21,4 +21,8 @@ export class ClienteService{
         return this.http.put(PATH_CONTROLLER, cliente);
     }
 
+    deleteDeletarCliente(id: number){
+        return this.http.delete(PATH_CONTROLLER + `/${id}`);
+    }
+
 }
