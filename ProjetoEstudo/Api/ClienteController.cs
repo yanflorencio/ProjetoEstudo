@@ -85,7 +85,12 @@ namespace ProjetoEstudo.Api
 												.Where(c => c.Cpf.Equals(cpf))
 												.FirstOrDefault();
 
-			return Ok(cliente);
+			if (cliente != null)
+			{
+				return Ok(cliente);
+			}
+
+			return NotFound();
 		}
 
 		private bool VerificaSeCpfJaCadastrado(string cpf)
@@ -101,7 +106,12 @@ namespace ProjetoEstudo.Api
 		{
 			Cliente cliente = _clienteDao.GetClienteIncludeJogosAlugadosByCpf(cpf);
 
-			return Ok(cliente);
+			if (cliente != null)
+			{
+				return Ok(cliente);
+			}
+
+			return NotFound();
 		}
 	}
 }
