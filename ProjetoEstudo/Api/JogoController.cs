@@ -60,7 +60,13 @@ namespace ProjetoEstudo.Controllers
 			List<Jogo> listaJogos = _jogoRepositorio.GetAll()
 											.Where(jogo => jogo.Plataforma == plataforma)
 											.ToList();
-			return Ok(listaJogos);
+
+			if (listaJogos.Any())
+			{
+				return Ok(listaJogos);
+			}
+
+			return NotFound();
 		}
 
 		[HttpGet("{id}")]
