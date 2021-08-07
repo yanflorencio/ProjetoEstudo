@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Filtros;
+using ProjetoEstudo.Service;
+using ProjetoEstudo.Service.Interfaces;
 
 namespace ProjetoEstudo
 {
@@ -34,9 +36,13 @@ namespace ProjetoEstudo
 				options.Filters.Add(typeof(ErrorResponseFilter));
 			}).AddXmlSerializerFormatters();
 
+			//DAO
 			services.AddTransient<IJogoDao, JogoDao>();
 			services.AddTransient<IClienteDao, ClienteDao>();
 			services.AddTransient<IAlugadoDao, AlugadoDao>();
+
+			//SERVICE
+			services.AddTransient<IJogoService, JogoService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

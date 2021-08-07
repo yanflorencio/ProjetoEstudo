@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ProjetoEstudo.Dao\ProjetoEstudo.Dao.csproj" />
     <ProjectReference Include="..\ProjetoEstudo.Model\ProjetoEstudo.Model.csproj" />
+    <ProjectReference Include="..\ProjetoEstudo.Service\ProjetoEstudo.Service.csproj" />
   </ItemGroup>
 
 </Project>

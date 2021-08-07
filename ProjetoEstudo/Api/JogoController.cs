@@ -1,7 +1,7 @@
 ﻿using EstudoProjeto.Utils;
 using Microsoft.AspNetCore.Mvc;
-using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
+using ProjetoEstudo.Service.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,17 +12,17 @@ namespace ProjetoEstudo.Controllers
 	public class JogoController : ControllerBase
 	{
 
-		private readonly IJogoDao _jogoRepositorio;
+		private readonly IJogoService _jogoService;
 
-		public JogoController(IJogoDao jogoRepositorio)
+		public JogoController(IJogoService jogoService)
 		{
-			_jogoRepositorio = jogoRepositorio;
+			_jogoService = jogoService;
 		}
 
 		[HttpGet]
 		public IActionResult GetAllJogos()
 		{
-			List<Jogo> listaJogos = _jogoRepositorio.GetAll().ToList();
+			IList<Jogo> listaJogos = _jogoService.GetJogos();
 			return Ok(listaJogos);
 		}
 
@@ -31,7 +31,7 @@ namespace ProjetoEstudo.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_jogoRepositorio.Save(jogo);
+				_jogoService.CadastrarJogo(jogo);
 
 				
 				var uri = Url.Action("GetJogo", new { id = jogo.Id });
@@ -46,7 +46,7 @@ namespace ProjetoEstudo.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_jogoRepositorio.Update(jogo);
+				_jogoService.AlterarJogo(jogo);
 
 				return Ok(jogo);
 			}
@@ -57,9 +57,7 @@ namespace ProjetoEstudo.Controllers
 		[HttpGet("ByPlataforma/{plataforma:int}")]
 		public IActionResult GetJogoByPlataforma(Enum.Plataforma plataforma)
 		{
-			List<Jogo> listaJogos = _jogoRepositorio.GetAll()
-											.Where(jogo => jogo.Plataforma == plataforma)
-											.ToList();
+			IList<Jogo> listaJogos = _jogoService.GetJogoByPlataforma(plataforma);
 
 			if (listaJogos.Any())
 			{
@@ -72,11 +70,11 @@ namespace ProjetoEstudo.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetJogo(long id)
 		{
-			Jogo jogo = _jogoRepositorio.FindById(id);
+			Jogo jogo = _jogoService.GetById(id);
 
 			if(jogo == null)
 			{
-				return NotFound();
+				return NotFound("Nao Encontrado");
 			}
 			return Ok(jogo);
 		}
@@ -84,21 +82,15 @@ namespace ProjetoEstudo.Controllers
 		[HttpDelete("{id}")]
 		public IActionResult DeleteJogo(long id)
 		{
-			Jogo jogo = _jogoRepositorio.FindById(id);
+			_jogoService.DeletarJogo(id);
 
-			if (jogo != null)
-			{
-				_jogoRepositorio.Delete(jogo);
-				return Ok(true); //Poderia retornar NoContent()
-			}
-
-			return BadRequest();
+			return Ok();
 		}
 
 		[HttpGet("GetJogosDisponiveis")]
 		public IActionResult GetJogosDisponiveis()
 		{
-			IList<Jogo> listaJogos = _jogoRepositorio.GetJogosDisponiveis();
+			IList<Jogo> listaJogos = _jogoService.GetJogosDisponiveis();
 			return Ok(listaJogos);
 		}
 	}
