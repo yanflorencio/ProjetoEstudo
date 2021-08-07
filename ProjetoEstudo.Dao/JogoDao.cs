@@ -29,5 +29,13 @@ namespace ProjetoEstudo.Dao
 
 			return query.ToList();
 		}
+
+		public IList<Jogo> GetJogoByPlataforma(Plataforma plataforma)
+		{
+			IList<Jogo> lista = this.GetAll().Where(jogo => jogo.Plataforma == plataforma)
+								.ToList();
+
+			return lista;
+		}
 	}
 }

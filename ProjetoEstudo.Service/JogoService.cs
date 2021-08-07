@@ -35,10 +35,8 @@ namespace ProjetoEstudo.Service
 
 		public IList<Jogo> GetJogoByPlataforma(Enum.Plataforma plataforma)
 		{
-			IList<Jogo> lista =_jogoRepositorio.GetAll().Where(jogo => jogo.Plataforma == plataforma)
-											.ToList();
 
-			return lista;
+			return _jogoRepositorio.GetJogoByPlataforma(plataforma);
 		}
 
 		public Jogo GetById(long id)
