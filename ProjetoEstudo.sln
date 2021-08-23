@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoEstudo.Utils", "Estu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoEstudo.Dao", "ProjetoEstudo.Dao\ProjetoEstudo.Dao.csproj", "{3CF3AE43-D0B2-4402-8A50-A0178A776271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoEstudo.Service", "ProjetoEstudo.Service\ProjetoEstudo.Service.csproj", "{957B86FD-AFA0-4A39-9764-A6E227178808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoEstudo.Service", "ProjetoEstudo.Service\ProjetoEstudo.Service.csproj", "{957B86FD-AFA0-4A39-9764-A6E227178808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projeto.Estudo.SenderServiceBus", "Projeto.Estudo.SenderServiceBus\Projeto.Estudo.SenderServiceBus.csproj", "{0686CC07-D071-490B-AA53-32D784A495C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{957B86FD-AFA0-4A39-9764-A6E227178808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{957B86FD-AFA0-4A39-9764-A6E227178808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{957B86FD-AFA0-4A39-9764-A6E227178808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0686CC07-D071-490B-AA53-32D784A495C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0686CC07-D071-490B-AA53-32D784A495C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0686CC07-D071-490B-AA53-32D784A495C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0686CC07-D071-490B-AA53-32D784A495C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

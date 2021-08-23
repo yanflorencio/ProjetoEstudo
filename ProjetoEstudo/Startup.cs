@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Projeto.Estudo.SenderServiceBus;
+using Projeto.Estudo.SenderServiceBus.Interfaces;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Filtros;
 using ProjetoEstudo.Service;
 using ProjetoEstudo.Service.Interfaces;
+using ProjetoEstudo.Utils;
 
 namespace ProjetoEstudo
 {
@@ -27,8 +30,10 @@ namespace ProjetoEstudo
 		{
 			services.AddControllers();
 
+			string connectionStrings = UtilitiesConfig.GetAppSetting("ProjetoEstudo");
+
 			services.AddDbContext<BancoContext>(db => {
-				db.UseSqlServer(Configuration.GetConnectionString("ProjetoEstudo"));
+				db.UseSqlServer(connectionStrings);
 			});
 
 			services.AddMvc(options =>
@@ -43,6 +48,9 @@ namespace ProjetoEstudo
 
 			//SERVICE
 			services.AddTransient<IJogoService, JogoService>();
+
+			//SERVICE_BUS
+			services.AddTransient<ISender, Sender>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ProjetoEstudo.Utils;
 
 namespace ProjetoEstudo
 {
@@ -18,6 +14,13 @@ namespace ProjetoEstudo
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
+				.ConfigureLogging(loggin => {
+
+					IConfigurationRoot config = new ConfigurationBuilder()
+					.AddJsonFile(path: UtilitiesConfig.DEFAULT_CONFIG_FILE)
+					.Build();
+
+				})
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
 					webBuilder.UseStartup<Startup>();

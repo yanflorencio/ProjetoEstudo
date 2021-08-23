@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Projeto.Estudo.SenderServiceBus.Interfaces;
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace ProjetoEstudo.Api
 	public class ClienteController : ControllerBase
 	{
 		private readonly IClienteDao _clienteDao;
+		private readonly ISender _serviceBusSender;
 
-		public ClienteController(IClienteDao jogoDao)
+		public ClienteController(IClienteDao jogoDao, ISender sender)
 		{
 			_clienteDao = jogoDao;
+			_serviceBusSender = sender;
 		}
 
 		[HttpPost]
@@ -28,6 +31,9 @@ namespace ProjetoEstudo.Api
 					_clienteDao.Save(cliente);
 
 					var uri = Url.Action("GetCliente", new { id = cliente.Id });
+
+					_serviceBusSender.SendMessageAsync(cliente, "projeto.estudo.cliente");
+
 					return Created(uri, cliente); //201
 				}
 				else

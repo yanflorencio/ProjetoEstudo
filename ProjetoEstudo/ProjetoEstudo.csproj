@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Projeto.Estudo.SenderServiceBus\Projeto.Estudo.SenderServiceBus.csproj" />
     <ProjectReference Include="..\ProjetoEstudo.Dao\ProjetoEstudo.Dao.csproj" />
     <ProjectReference Include="..\ProjetoEstudo.Model\ProjetoEstudo.Model.csproj" />
     <ProjectReference Include="..\ProjetoEstudo.Service\ProjetoEstudo.Service.csproj" />
