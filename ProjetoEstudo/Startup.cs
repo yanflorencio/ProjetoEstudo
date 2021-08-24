@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Projeto.Estudo.SenderServiceBus.Interfaces;
 using ProjetoEstudo.Dao;
 using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Filtros;
+using ProjetoEstudo.Providers.Health;
 using ProjetoEstudo.Service;
 using ProjetoEstudo.Service.Interfaces;
 using ProjetoEstudo.Utils;
@@ -41,6 +43,8 @@ namespace ProjetoEstudo
 				options.Filters.Add(typeof(ErrorResponseFilter));
 			}).AddXmlSerializerFormatters();
 
+			services.AddHealthChecks();
+
 			//DAO
 			services.AddTransient<IJogoDao, JogoDao>();
 			services.AddTransient<IClienteDao, ClienteDao>();
@@ -70,6 +74,11 @@ namespace ProjetoEstudo
 				endpoints.MapGet("/", async context =>
 				{
 					await context.Response.WriteAsync("Hello World!");
+				});
+
+				endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+				{
+					ResponseWriter = HealthCheckProvider.GetInstance(env).WriteHealthStatusAsJson
 				});
 			});
 		}
