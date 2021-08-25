@@ -43,7 +43,9 @@ namespace ProjetoEstudo
 				options.Filters.Add(typeof(ErrorResponseFilter));
 			}).AddXmlSerializerFormatters();
 
-			services.AddHealthChecks();
+
+			services.AddHealthChecks()
+				.AddDbContextCheck<BancoContext>(nameof(BancoContext));
 
 			//DAO
 			services.AddTransient<IJogoDao, JogoDao>();
@@ -75,9 +77,7 @@ namespace ProjetoEstudo
 				{
 					await context.Response.WriteAsync("Hello World!");
 				});
-
-				endpoints.MapHealthChecks("/health", new HealthCheckOptions()
-				{
+				endpoints.MapHealthChecks("health", new HealthCheckOptions() { 
 					ResponseWriter = HealthCheckProvider.GetInstance(env).WriteHealthStatusAsJson
 				});
 			});

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,31 +23,15 @@ namespace ProjetoEstudo.Providers.Health
 
 		public async Task WriteHealthStatusAsJson(HttpContext context, HealthReport report)
 		{
-			//using BancoContext modelContext = this.BancoContext;
-
 			dynamic info = new ExpandoObject();
 			info.Now = DateTime.Now;
 			info.Environment = this.Environment.EnvironmentName;
-			//info.BaseConnection = TestDbConnection(modelContext);
+			info.BaseConnection = report.Entries[nameof(BancoContext)].Status == HealthStatus.Healthy;
 
 			JObject applicationInfo = JObject.FromObject(info);
-
-			context.Response.ContentType = "application/json";
 
 			await context.Response.WriteAsync(JsonConvert.SerializeObject(applicationInfo));
 		}//func
 
-		private static bool TestDbConnection(BancoContext context)
-		{
-			try
-			{
-				context.Database.ExecuteSqlRaw("SELECT 1");
-				return true;
-			}//try
-			catch (Exception e)
-			{
-				return false;
-			}//catch
-		}//func
 	}//class
 }
