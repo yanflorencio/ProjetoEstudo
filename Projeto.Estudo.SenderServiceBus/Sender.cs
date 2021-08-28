@@ -1,33 +1,60 @@
-﻿using Azure.Messaging.ServiceBus;
-using Newtonsoft.Json;
-using Projeto.Estudo.SenderServiceBus.Interfaces;
+﻿using Projeto.Estudo.SenderServiceBus.Interfaces;
 using ProjetoEstudo.Utils;
-using System.Threading.Tasks;
+using Rebus.Activation;
+using Rebus.Bus.Advanced;
+using Rebus.Config;
+using Rebus.Topic;
+using System;
 
 namespace Projeto.Estudo.SenderServiceBus
 {
 	public class Sender : ISender
 	{
+		private string ConnectioString { get; set; }
 
 		public Sender()
 		{
-
+			this.ConnectioString = UtilitiesConfig.GetAppSetting("AzureServiceBus");
 		}
 
-		public async Task SendMessageAsync<T>(T message, string queueOrTopicName)
+		public bool SendMessage(object message, string topicName)
 		{
-			string connectionString = UtilitiesConfig.GetAppSetting("AzureServiceBus");
+			string connectionString = this.ConnectioString;
 
-			await using (ServiceBusClient cliente = new ServiceBusClient(connectionString))
+			ISyncBus bus = this.GetConnectionForPublish(connectionString, topicName);
+
+			try
 			{
-				ServiceBusSender serviceBusSender = cliente.CreateSender(queueOrTopicName);
+				bus.Publish(message);
 
-				string jsonMessage = JsonConvert.SerializeObject(message);
+				return true;
+			}//try
+			catch (Exception e)
+			{
+				//LOGA ERRO
+				return false;
+			}//catch
 
-				ServiceBusMessage serviceBusMessage = new ServiceBusMessage(jsonMessage);
+		}//func
 
-				await serviceBusSender.SendMessageAsync(serviceBusMessage);
-			}//using
+
+		public ISyncBus GetConnectionForPublish(string connectionString, string topicName)
+		{
+			string defaultQueue = "default";
+
+			using (BuiltinHandlerActivator activator = new BuiltinHandlerActivator())
+			{
+
+				Configure
+						.With(activator)
+						.Transport(t => t.UseAzureServiceBus(connectionString, defaultQueue))
+						.Options(o => o.Decorate<ITopicNameConvention>(bean => new TopicNameResolver(topicName)))
+						.Start();
+
+				ISyncBus bus = activator.Bus.Advanced.SyncBus;
+
+				return bus;
+			}
 		}//func
 
 	}//class
