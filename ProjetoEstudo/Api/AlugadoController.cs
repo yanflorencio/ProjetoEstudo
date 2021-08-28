@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using ProjetoEstudo.Model.Dtos;
+using ProjetoEstudo.Service.Interfaces;
 using System;
-using System.Linq;
-using static EstudoProjeto.Utils.Enum;
 
 namespace ProjetoEstudo.Api
 {
@@ -12,11 +10,14 @@ namespace ProjetoEstudo.Api
 	[Route("api/[controller]")]
 	public class AlugadoController : ControllerBase
 	{
-		private readonly IAlugadoDao _alugadoDao;
+		private readonly IDevolverJogo _devolverJogo;
 
-		public AlugadoController(IAlugadoDao alugadoDao)
+		private readonly IAlugarJogo _alugadoService;
+
+		public AlugadoController(IDevolverJogo devolverJogo, IAlugarJogo alugadoService)
 		{
-			_alugadoDao = alugadoDao;
+			_devolverJogo = devolverJogo;
+			_alugadoService = alugadoService;
 		}
 
 		[HttpPost]
@@ -24,30 +25,15 @@ namespace ProjetoEstudo.Api
 		{
 			if (ModelState.IsValid)
 			{
-				if ((alugado.ClienteId != default) && (!this.CheckJogoEstaDisponivel(alugado))) 
+				DateTime? dataEntrega = _alugadoService.AlugarJogo(alugado);
+
+				if (dataEntrega.HasValue)
 				{
-					DateTime dataEntrega = alugado.DataAluguel.AddDays(5);
-
-					alugado.DataEntrega = dataEntrega;
-					alugado.Status = StatusAlugado.Alugado;
-
-					_alugadoDao.Save(alugado);
-
-					return Ok(dataEntrega);
+					return Ok(dataEntrega.Value);
 				}
 			}
 
 			return BadRequest();
-		}
-
-		private bool CheckJogoEstaDisponivel(Alugado alugado)
-		{
-			IQueryable<Alugado> query = _alugadoDao.GetAll().Where(bean =>
-																	(bean.JogoId == alugado.JogoId) &&
-																	(bean.Status != StatusAlugado.Alugado)
-																	);
-
-			return query.Any();
 		}
 
 		[HttpPut]
@@ -55,36 +41,16 @@ namespace ProjetoEstudo.Api
 		{
 			if (ModelState.IsValid)
 			{
-				Alugado alugado = _alugadoDao.FindById(devolverJogoRequestDto.Id);
 
-				if (alugado != null)
+				DevolverJogoResponseDto responseDto = _devolverJogo.DevolverJogo(devolverJogoRequestDto);
+
+				if (responseDto != null)
 				{
-					alugado.Status = StatusAlugado.Entregue;
-
-					_alugadoDao.Update(alugado);
-
-					DevolverJogoResponseDto responseDto = this.GetDevolverJogoResponseDto(devolverJogoRequestDto.DataDevolucao, alugado.DataEntrega);
-
 					return Ok(responseDto);
-				}
+				}			
 			}
 
 			return BadRequest();
-		}
-
-		private DevolverJogoResponseDto GetDevolverJogoResponseDto(DateTime dataEntregaReal, DateTime dataEntregaEsperada)
-		{
-
-			TimeSpan date = dataEntregaReal - dataEntregaEsperada;
-
-			int days = date.Days <= 0 ? 0 : date.Days;
-
-			DevolverJogoResponseDto devolverJogoResponseDto = new DevolverJogoResponseDto()
-			{
-				DiasDeAtraso = days,
-			};
-
-			return devolverJogoResponseDto;
 		}
 	}
 }

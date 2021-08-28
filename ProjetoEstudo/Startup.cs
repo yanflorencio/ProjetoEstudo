@@ -54,6 +54,8 @@ namespace ProjetoEstudo
 
 			//SERVICE
 			services.AddTransient<IJogoService, JogoService>();
+			services.AddTransient<IAlugarJogo, AlugarJogoService>();
+			services.AddTransient<IDevolverJogo, DevolverJogoService>();
 
 			//SERVICE_BUS
 			services.AddTransient<ISender, Sender>();
