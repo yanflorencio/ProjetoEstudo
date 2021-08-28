@@ -1,6 +1,8 @@
-﻿using ProjetoEstudo.Dao.Interfaces;
+﻿using Projeto.Estudo.SenderServiceBus.Interfaces;
+using ProjetoEstudo.Dao.Interfaces;
 using ProjetoEstudo.Model;
 using ProjetoEstudo.Service.Interfaces;
+using ProjetoEstudo.Utils;
 using System;
 using System.Linq;
 using static EstudoProjeto.Utils.Enum;
@@ -10,10 +12,15 @@ namespace ProjetoEstudo.Service
 	public class AlugarJogoService : IAlugarJogo
 	{
 		private readonly IAlugadoDao _alugadoDao;
+		private readonly ISender _sender;
+		private string TopicName { get; set; }
 
-		public AlugarJogoService(IAlugadoDao alugadoDao)
+		public AlugarJogoService(IAlugadoDao alugadoDao, ISender sender)
 		{
 			_alugadoDao = alugadoDao;
+			_sender = sender;
+
+			this.TopicName = UtilitiesConfig.GetAppSetting("AlugarJogoTopic");
 		}
 
 		public DateTime? AlugarJogo(Alugado alugado)
@@ -26,6 +33,8 @@ namespace ProjetoEstudo.Service
 				alugado.Status = StatusAlugado.Alugado;
 
 				_alugadoDao.Save(alugado);
+
+				_sender.SendMessage(alugado, this.TopicName);
 
 				return dataEntrega;
 			}

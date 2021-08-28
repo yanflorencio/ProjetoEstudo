@@ -5,6 +5,7 @@ using Rebus.Bus.Advanced;
 using Rebus.Config;
 using Rebus.Topic;
 using System;
+using System.Text.Json;
 
 namespace Projeto.Estudo.SenderServiceBus
 {
@@ -21,29 +22,29 @@ namespace Projeto.Estudo.SenderServiceBus
 		{
 			string connectionString = this.ConnectioString;
 
-			ISyncBus bus = this.GetConnectionForPublish(connectionString, topicName);
-
-			try
-			{
-				bus.Publish(message);
-
-				return true;
-			}//try
-			catch (Exception e)
-			{
-				//LOGA ERRO
-				return false;
-			}//catch
-
-		}//func
-
-
-		public ISyncBus GetConnectionForPublish(string connectionString, string topicName)
-		{
-			string defaultQueue = "default";
-
 			using (BuiltinHandlerActivator activator = new BuiltinHandlerActivator())
 			{
+				try
+				{
+					ISyncBus bus = this.GetConnectionForPublish(connectionString, topicName, activator);
+
+					string json = JsonSerializer.Serialize(message);
+
+					bus.Publish(message);
+
+					return true;
+				}//try
+				catch (Exception e)
+				{
+					//LOGA ERRO
+					return false;
+				}//catch
+			}
+		}//func
+
+		public ISyncBus GetConnectionForPublish(string connectionString, string topicName, BuiltinHandlerActivator activator)
+		{
+			string defaultQueue = "default";
 
 				Configure
 						.With(activator)
@@ -54,7 +55,6 @@ namespace Projeto.Estudo.SenderServiceBus
 				ISyncBus bus = activator.Bus.Advanced.SyncBus;
 
 				return bus;
-			}
 		}//func
 
 	}//class
