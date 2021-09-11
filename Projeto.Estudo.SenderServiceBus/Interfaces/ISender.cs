@@ -2,6 +2,6 @@
 {
 	public interface ISender
 	{
-		public bool SendMessage(object message, string topicName);
+		public void SendMessage(object message, string topicName);
 	}//class
 }//namespace

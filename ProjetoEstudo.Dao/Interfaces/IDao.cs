@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ProjetoEstudo.Dao.Interface
 {
@@ -9,5 +10,7 @@ namespace ProjetoEstudo.Dao.Interface
 		public void Save(params TEntity[] entity);
 		public void Delete(params TEntity[] entity);
 		public void Update(params TEntity[] entity);
+
+		public R ExecuteTransaction<R>(Func<R> func);
 	}
 }

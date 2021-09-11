@@ -1,5 +1,7 @@
 ﻿using ProjetoEstudo.Dao.Interface;
+using System;
 using System.Linq;
+using System.Transactions;
 
 namespace ProjetoEstudo.Dao
 {
@@ -34,5 +36,17 @@ namespace ProjetoEstudo.Dao
 			_context.Set<TEntity>().UpdateRange(entity);
 			_context.SaveChanges();
 		}
+
+		public R ExecuteTransaction<R>(Func<R> func)
+		{
+			using (TransactionScope transaction = new TransactionScope())
+			{
+				R result = func();
+
+				transaction.Complete();
+
+				return result;
+			}//using
+		}//func
 	}
 }

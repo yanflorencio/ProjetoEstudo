@@ -32,9 +32,15 @@ namespace ProjetoEstudo.Service
 				alugado.DataEntrega = dataEntrega;
 				alugado.Status = StatusAlugado.Alugado;
 
-				_alugadoDao.Save(alugado);
+				Action action = () =>
+				{
+					_alugadoDao.Save(alugado);
 
-				_sender.SendMessage(alugado, this.TopicName);
+					_sender.SendMessage(alugado, this.TopicName);
+					
+				};
+
+				ExecuteTransactionWithoutResult(action);
 
 				return dataEntrega;
 			}
@@ -51,5 +57,15 @@ namespace ProjetoEstudo.Service
 
 			return query.Any();
 		}
+
+		public void ExecuteTransactionWithoutResult(Action action)
+		{
+			Func<object> func = () =>
+			{
+				action();
+				return null;
+			};//func
+			_alugadoDao.ExecuteTransaction(func);
+		}//func
 	}//class
 }//namespace

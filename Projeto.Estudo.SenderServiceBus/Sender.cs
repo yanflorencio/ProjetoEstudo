@@ -4,8 +4,8 @@ using Rebus.Activation;
 using Rebus.Bus.Advanced;
 using Rebus.Config;
 using Rebus.Topic;
-using System;
 using System.Text.Json;
+using System.Transactions;
 
 namespace Projeto.Estudo.SenderServiceBus
 {
@@ -18,27 +18,21 @@ namespace Projeto.Estudo.SenderServiceBus
 			this.ConnectioString = UtilitiesConfig.GetAppSetting("AzureServiceBus");
 		}
 
-		public bool SendMessage(object message, string topicName)
+		public void SendMessage(object message, string topicName)
 		{
-			string connectionString = this.ConnectioString;
-
-			using (BuiltinHandlerActivator activator = new BuiltinHandlerActivator())
+			using (var tx = new TransactionScope(TransactionScopeOption.Suppress, TransactionScopeAsyncFlowOption.Enabled))
 			{
-				try
+				string connectionString = this.ConnectioString;
+
+				using (BuiltinHandlerActivator activator = new BuiltinHandlerActivator())
 				{
 					ISyncBus bus = this.GetConnectionForPublish(connectionString, topicName, activator);
 
 					string json = JsonSerializer.Serialize(message);
 
 					bus.Publish(message);
-
-					return true;
-				}//try
-				catch (Exception e)
-				{
-					//LOGA ERRO
-					return false;
-				}//catch
+				}
+				tx.Complete();
 			}
 		}//func
 
