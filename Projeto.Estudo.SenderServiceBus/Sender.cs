@@ -30,13 +30,16 @@ namespace Projeto.Estudo.SenderServiceBus
 
 					string json = JsonSerializer.Serialize(message);
 
-					bus.Publish(message);
+					FileMessage clienteManagerClienteMessage = new FileMessage();
+					clienteManagerClienteMessage.Message = json;
+
+					bus.Publish(clienteManagerClienteMessage);
 				}
 				tx.Complete();
 			}
 		}//func
 
-		public ISyncBus GetConnectionForPublish(string connectionString, string topicName, BuiltinHandlerActivator activator)
+		public virtual ISyncBus GetConnectionForPublish(string connectionString, string topicName, BuiltinHandlerActivator activator)
 		{
 			string defaultQueue = "default";
 
@@ -50,6 +53,11 @@ namespace Projeto.Estudo.SenderServiceBus
 
 				return bus;
 		}//func
+
+		public class FileMessage
+		{
+			public string Message { get; set; }
+		}
 
 	}//class
 }//namespace
