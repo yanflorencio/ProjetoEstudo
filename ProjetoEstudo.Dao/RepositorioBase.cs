@@ -6,7 +6,7 @@ using System.Transactions;
 
 namespace ProjetoEstudo.Dao
 {
-	public class RepositorioBase<TEntity> : IDao<TEntity> where TEntity : class
+	public abstract class RepositorioBase<TEntity> : IDao<TEntity> where TEntity : class
 	{
 		protected readonly BancoContext _context;
 
