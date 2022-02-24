@@ -1,4 +1,5 @@
-﻿using ProjetoEstudo.Dao.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjetoEstudo.Dao.Interface;
 using System;
 using System.Linq;
 using System.Transactions;
@@ -9,31 +10,34 @@ namespace ProjetoEstudo.Dao
 	{
 		protected readonly BancoContext _context;
 
+		protected readonly DbSet<TEntity> _dbSet;
+
 		public RepositorioBase(BancoContext context)
 		{
 			_context = context;
+			_dbSet = context.Set<TEntity>();
 		}
 
 		public void Delete(params TEntity[] entity)
 		{
-			_context.Set<TEntity>().RemoveRange(entity);
+			_dbSet.RemoveRange(entity);
 			_context.SaveChanges();
 		}
 
-		public TEntity FindById(long id) => _context.Set<TEntity>().Find(id);
+		public TEntity FindById(long id) => _dbSet.Find(id);
 
 
-		public IQueryable<TEntity> GetAll() => _context.Set<TEntity>().AsQueryable();
+		public IQueryable<TEntity> GetAll() => _dbSet.AsQueryable();
 
 		public void Save(params TEntity[] entity)
 		{
-			_context.Set<TEntity>().AddRange(entity);
+			_dbSet.AddRange(entity);
 			_context.SaveChanges();
 		}
 
 		public void Update(params TEntity[] entity)
 		{
-			_context.Set<TEntity>().UpdateRange(entity);
+			_dbSet.UpdateRange(entity);
 			_context.SaveChanges();
 		}
 
