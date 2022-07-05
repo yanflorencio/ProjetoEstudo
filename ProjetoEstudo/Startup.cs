@@ -33,7 +33,8 @@ namespace ProjetoEstudo
 
 			string connectionStrings = UtilitiesConfig.GetAppSetting("ProjetoEstudo");
 
-			services.AddDbContext<BancoContext>(db => {
+			services.AddDbContext<BancoContext>(db =>
+			{
 				db.UseSqlServer(connectionStrings);
 			});
 
@@ -52,12 +53,17 @@ namespace ProjetoEstudo
 			services.AddTransient<IAlugadoDao, AlugadoDao>();
 
 			//SERVICE
-			services.AddTransient<IJogoService, JogoService>();
-			services.AddTransient<IAlugarJogo, AlugarJogoService>();
-			services.AddTransient<IDevolverJogo, DevolverJogoService>();
+			ConfiguraServices(services);
 
 			//SERVICE_BUS
 			services.AddTransient<ISender, Sender>();
+		}
+
+		private static void ConfiguraServices(IServiceCollection services)
+		{
+			services.AddTransient<IJogoService, JogoService>();
+			services.AddTransient<IAlugarJogo, AlugarJogoService>();
+			services.AddTransient<IDevolverJogo, DevolverJogoService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
