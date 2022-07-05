@@ -48,18 +48,23 @@ namespace ProjetoEstudo
 				.AddDbContextCheck<BancoContext>(nameof(BancoContext));
 
 			//DAO
-			services.AddTransient<IJogoDao, JogoDao>();
-			services.AddTransient<IClienteDao, ClienteDao>();
-			services.AddTransient<IAlugadoDao, AlugadoDao>();
+			ConfigureProjetoEstudoDaos(services);
 
 			//SERVICE
-			ConfiguraServices(services);
+			ConfigureProjetoEstudoServices(services);
 
 			//SERVICE_BUS
 			services.AddTransient<ISender, Sender>();
 		}
 
-		private static void ConfiguraServices(IServiceCollection services)
+		private static void ConfigureProjetoEstudoDaos(IServiceCollection services)
+		{
+			services.AddTransient<IJogoDao, JogoDao>();
+			services.AddTransient<IClienteDao, ClienteDao>();
+			services.AddTransient<IAlugadoDao, AlugadoDao>();
+		}
+
+		private static void ConfigureProjetoEstudoServices(IServiceCollection services)
 		{
 			services.AddTransient<IJogoService, JogoService>();
 			services.AddTransient<IAlugarJogo, AlugarJogoService>();
