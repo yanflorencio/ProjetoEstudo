@@ -54,6 +54,11 @@ namespace ProjetoEstudo
 			ConfigureProjetoEstudoServices(services);
 
 			//SERVICE_BUS
+			ConfigureProjetoEstudoServiceBus(services);
+		}
+
+		private static void ConfigureProjetoEstudoServiceBus(IServiceCollection services)
+		{
 			services.AddTransient<ISender, Sender>();
 		}
 
