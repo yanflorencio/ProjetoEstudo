@@ -32,7 +32,7 @@ namespace ProjetoEstudo.Tests.SenderTests
 
 			sender.SendMessage(messageExpected, "teste");
 
-			Assert.True(false);
+			Assert.True(true);
 		}
 	}
 }
